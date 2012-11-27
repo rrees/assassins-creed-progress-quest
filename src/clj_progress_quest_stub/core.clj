@@ -34,7 +34,7 @@
 			(.setText status-message "Starting the game")
 			(.setValue progress-bar 0)
 			(future (perform-heroic-action status-message progress-bar (world/create)))))
-	(doto (JFrame. "Assassin Creed Progress Quest")
+	(doto (JFrame. "Assassin's Creed Progress Quest")
 		(.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
 		(.setContentPane panel)
 		(.pack)

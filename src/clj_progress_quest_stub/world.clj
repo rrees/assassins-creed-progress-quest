@@ -32,8 +32,16 @@
 		{:quest-text "Running from guards"}
 		{:quest-text (str "Hiding in a " (hide))}
 		{:quest-text "Claiming a reward"}])
-	:town (fn [] [(rand-nth [{:quest-text "Wandering round town"}])])
-	:wilderness (fn [] [{:quest-text (str "Crossing a " (wilderness-location))}])})
+	:town (fn [] [(rand-nth [{:quest-text "Wandering round town"}
+		{:quest-text "Performing sedition" :speed :slow}
+		{:quest-text "Upgrading equipment"}
+		{:quest-text "Gossiping with towns people" :speed :fast}
+		{:quest-text "Falling off a roof"}
+		{:quest-text "Accidentally stabbing someone instead of talking to them"}])])
+	:wilderness (fn [] [{:quest-text (str "Crossing a " (wilderness-location))}
+		(rand-nth [{:quest-text "Speaking with elders"}
+			{:quest-text "Brooding" :speed :slow}
+			{:quest-text "Making a clumsy philosophical point" :speed :fast}])])})
 
 (defn generate-quest-line [mode]
 	((mode quest-generators)))
