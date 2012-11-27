@@ -13,27 +13,28 @@
 
 (defn perform-heroic-action [status-message progress-bar world]
 	(let [current-progress (.getValue progress-bar) _ (println current-progress)
-		new-world (world/update-world world current-progress)]
+		new-world (world/update world current-progress)
+		current-quest (->> new-world :quest-line  first)]
 	(if (= current-progress 100)
 		(do
 			(.setValue progress-bar 0)
-			(.setText status-message (:quest-text new-world)))
+			(.setText status-message (:quest-text current-quest)))
 
 		(.setValue progress-bar (+ current-progress 10)))
-	(Thread/sleep 1000)
+	(Thread/sleep (world/speeds (get current-quest :speed :normal)))
 	(recur status-message progress-bar new-world)))
 
 (defn progress-quest []
-		(let [status-message (JLabel. "Your adventure awaits")
+		(let [status-message (JLabel. "Explore the legacy of the assassins")
 		progress-bar (JProgressBar. 0 100)
-		start-button (JButton. "Begin your quest")
+		start-button (JButton. "Play")
 		panel (doto (JPanel.) (. add status-message) (. add progress-bar) (. add start-button))]
 	(with-action start-button e
 		(do (.setEnabled start-button false)
-			(.setText status-message "Your quest begins")
+			(.setText status-message "Starting the game")
 			(.setValue progress-bar 0)
-			(future (perform-heroic-action status-message progress-bar (world/create-world)))))
-	(doto (JFrame. "Clojure Progress Quest")
+			(future (perform-heroic-action status-message progress-bar (world/create)))))
+	(doto (JFrame. "Assassin Creed Progress Quest")
 		(.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
 		(.setContentPane panel)
 		(.pack)
