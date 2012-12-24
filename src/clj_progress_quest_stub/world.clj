@@ -32,18 +32,21 @@
 		{:quest-text "Running from guards" :speed :fast}
 		{:quest-text (str "Hiding in a " (hide)) :speed :slow}
 		(rand-nth [{:quest-text "Claiming a reward"} {:quest-text "Being betrayed"}])])
-	:town (fn [] [(rand-nth [{:quest-text "Wandering round town"}
+	:town (fn [] [ {:quest-text "Entering Boston"}
+		(rand-nth [ {:quest-text "Wandering round town"}
 		{:quest-text "Performing sedition" :speed :slow}
 		{:quest-text "Upgrading equipment"}
 		{:quest-text "Gossiping with town's people" :speed :fast}
 		{:quest-text "Falling off a roof"}
 		{:quest-text (str "Recruiting a " (recruit))}
 		{:quest-text "Accidentally stabbing someone instead of talking to them"}])])
-	:wilderness (fn [] [{:quest-text (str "Crossing a " (wilderness-location))}
-		(rand-nth [{:quest-text "Speaking with elders"}
-			{:quest-text "Brooding" :speed :slow}
-			{:quest-text "Making a clumsy philosophical point" :speed :fast}
-			{:quest-text "Getting lost"}])])})
+	:wilderness (fn [] [
+			{:quest-text "Entering the wilderness"}
+			{:quest-text (str "Crossing a " (wilderness-location))}
+			(rand-nth [{:quest-text "Speaking with elders"}
+				{:quest-text "Brooding" :speed :slow}
+				{:quest-text "Making a clumsy philosophical point" :speed :fast}
+				{:quest-text "Getting lost"}])])})
 
 (defn generate-quest-line [mode]
 	((mode quest-generators)))
@@ -57,7 +60,8 @@
 						next-state (rand-nth (current-state states))]
 					(assoc world
 						:quest-line (generate-quest-line next-state)
-						:quests-completed quests-completed))
+						:quests-completed quests-completed
+						:state next-state))
 					(assoc world
 						:quests-completed quests-completed
 						:quest-line remaining-quests))
